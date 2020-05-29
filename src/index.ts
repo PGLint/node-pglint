@@ -85,15 +85,6 @@ async function tryRun(cmd: string): Promise<string | null> {
   }
 }
 
-async function tryAndGetGitInfo() {
-  const gitBranch = await tryRun("git rev-parse --abbrev-ref HEAD");
-  const gitHash = await tryRun("git rev-parse --verify HEAD");
-  return {
-    gitBranch,
-    gitHash,
-  };
-}
-
 export async function pglint(options: PGLintOptions) {
   const token = options.token || process.env.PGLINT_TOKEN;
   if (!token) {
@@ -106,7 +97,10 @@ export async function pglint(options: PGLintOptions) {
     throw new Error("You must specify a project.");
   }
 
-  const { gitBranch, gitHash } = await tryAndGetGitInfo();
+  const gitBranch =
+    options.gitBranch || (await tryRun("git rev-parse --abbrev-ref HEAD"));
+  const gitHash =
+    options.gitHash || (await tryRun("git rev-parse --verify HEAD"));
 
   const pool = options.pgPool
     ? options.pgPool

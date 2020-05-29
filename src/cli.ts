@@ -13,22 +13,28 @@ Usage:
 <database>: connection string to your PostgreSQL database. If you have PostgreSQL installed locally using trust authentication, your database name may suffice. Otherwise a standard PostgreSQL connection URI (e.g. \`postgres://user:password@host:port/dbname\`) should be supplied. Alternatively supply via the DATABASE_URL environmental variable.
 `;
 
+const CLI_FLAGS: readonly string[] = [
+  "--project",
+  "--token",
+  "--connection",
+  "--gitBranch",
+  "--gitHash",
+];
+
 async function main() {
   // Rudimentary CLI parser to avoid adding another dependency
   const args = process.argv.slice(2);
   let token: string | undefined = undefined;
   let project: string | undefined = undefined;
   let database: string | undefined = undefined;
+  let gitBranch: string | undefined = undefined;
+  let gitHash: string | undefined = undefined;
   let next: string | null = null;
   for (const arg of args) {
-    if (arg === "--project") {
-      next = "project";
-    } else if (arg === "--token") {
-      next = "token";
-    } else if (arg === "--connection") {
-      next = "database";
+    if (CLI_FLAGS.includes(arg)) {
+      next = arg;
     } else {
-      if (next === "project") {
+      if (next === "--project") {
         if (project !== undefined) {
           throw Object.assign(
             new Error("--project was specified multiple times"),
@@ -36,8 +42,7 @@ async function main() {
           );
         }
         project = arg;
-        next = null;
-      } else if (next === "token") {
+      } else if (next === "--token") {
         if (token !== undefined) {
           throw Object.assign(
             new Error("--token was specified multiple times"),
@@ -45,8 +50,7 @@ async function main() {
           );
         }
         token = arg;
-        next = null;
-      } else if (next === "database") {
+      } else if (next === "--connection") {
         if (database !== undefined) {
           throw Object.assign(
             new Error("--database was specified multiple times"),
@@ -54,13 +58,29 @@ async function main() {
           );
         }
         database = arg;
-        next = null;
+      } else if (next === "--gitBranch") {
+        if (gitBranch !== undefined) {
+          throw Object.assign(
+            new Error("--gitBranch was specified multiple times"),
+            { usage: true }
+          );
+        }
+        gitBranch = arg;
+      } else if (next === "--gitHash") {
+        if (gitHash !== undefined) {
+          throw Object.assign(
+            new Error("--gitHash was specified multiple times"),
+            { usage: true }
+          );
+        }
+        gitHash = arg;
       } else {
         throw Object.assign(
           new Error(`Option '${arg}' is not a recognized command-line flag.`),
           { usage: true }
         );
       }
+      next = null;
     }
   }
   if (token === undefined) {
@@ -100,6 +120,8 @@ async function main() {
     connectionString: database,
     token,
     project,
+    gitBranch,
+    gitHash,
   });
 }
 
