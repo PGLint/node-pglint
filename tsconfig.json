@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "incremental": true,
+    "noEmitOnError": true,
+
+    "allowJs": false,
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false,
+    "lib": ["es2018"],
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "importHelpers": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "preserveWatchOutput": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+
+    "declaration": true,
+    "declarationMap": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": []
+}
