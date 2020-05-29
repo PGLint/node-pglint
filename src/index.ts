@@ -21,7 +21,10 @@ async function upload(
   token: string,
   project: string,
   { gitBranch, gitHash }: { gitBranch: string | null; gitHash: string | null }
-) {
+): Promise<{
+  status: string;
+  text: string;
+}> {
   const json = JSON.stringify(introspection);
   const compressed = gzipSync(json, { level: 9 });
 
@@ -61,10 +64,14 @@ async function upload(
   const colonIndex = text.indexOf(":");
   if (colonIndex >= 0) {
     const status = text.substr(0, colonIndex);
-    console.log(text);
     return { status, text };
   } else {
+    console.error("Did not understand response from server:");
+    console.error();
     console.error(text);
+    console.error();
+    console.error();
+    console.error();
     throw new Error("Could not process result from server.");
   }
 }
@@ -134,7 +141,7 @@ export async function pglint(options: PGLintOptions) {
   }
 
   if (results) {
-    await upload(results, token, project, { gitBranch, gitHash });
+    return await upload(results, token, project, { gitBranch, gitHash });
   } else {
     throw new Error(
       "Failed to retrieve introspection results from the database."

@@ -116,13 +116,35 @@ async function main() {
       { usage: true }
     );
   }
-  await pglint({
+  const { status, text } = await pglint({
     connectionString: database,
     token,
     project,
     gitBranch,
     gitHash,
   });
+  console.log(text);
+  switch (status) {
+    case "PASS": {
+      return;
+    }
+    case "TIMEOUT": {
+      process.exitCode = 4;
+      return;
+    }
+    case "ERROR": {
+      process.exitCode = 3;
+      return;
+    }
+    case "FAIL": {
+      process.exitCode = 2;
+      return;
+    }
+    default: {
+      process.exitCode = 10;
+      return;
+    }
+  }
 }
 
 main().catch((e) => {
