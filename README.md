@@ -3,17 +3,23 @@
 Usage:
 
 ```
-npx pglint [--token <token>] [--project <project>] [--connection <database>]
+npx pglint
+  [--token <token>]
+  [--project <project>]
+  [--connection <database>]
+  [--gitBranch <branch>]
+  [--gitHash <hash>]
 ```
 
-The following CLI arguments are required:
+The following CLI arguments are required unless the relevant environmental
+variable is supplied:
 
-- `token`: your authentication token from PGLint.com; alternatively supply via
-  the `PGLINT_TOKEN` environmental variable.
-- `project`: the name of your project on PGLint.com; alternatively supply via
-  the `PGLINT_PROJECT` environmental variable.
-- `database`: connection string to your PostgreSQL database (see below);
-  alternatively supply via the `DATABASE_URL` environmental variable.
+- `--token <token>`: your authentication token from PGLint.com; alternatively
+  supply via the `PGLINT_TOKEN` environmental variable.
+- `--project <project>`: the name of your project on PGLint.com; alternatively
+  supply via the `PGLINT_PROJECT` environmental variable.
+- `--connection <database>`: connection string to your PostgreSQL database (see
+  below); alternatively supply via the `DATABASE_URL` environmental variable.
 
 The command will exit with success (`0` exit code) if introspection is
 successful, the upload is successful, the results from your database analysis
@@ -22,6 +28,30 @@ and the analysis results show no errors. In all other cases the command will
 exit with a non-zero status code indicating failure.
 
 This command is suitable for use in your CI workflow.
+
+## Determining git branch and hash
+
+If you don't supply git branch/hash via the `--gitBranch` and `--gitHash` flags,
+we will attempt to determine your git branch and git hash by using these
+continuous integration environmental variables:
+
+- GitHub Actions:
+  - branch: `GITHUB_REF`
+  - hash: `GITHUB_SHA`
+- Circle CI
+  - branch: `CIRCLE_BRANCH`
+  - hash: `CIRCLE_SHA1`
+- Travis CI
+  - branch: `TRAVIS_PULL_REQUEST_BRANCH` or `TRAVIS_BRANCH`
+  - hash: `TRAVIS_COMMIT`
+
+Failing that, we'll try and extract them from the local git repository by
+running the following commands:
+
+- git branch: `git rev-parse --abbrev-ref HEAD`
+- git hash: `git rev-parse --verify HEAD`
+
+If this fails, we'll progress without branch/hash.
 
 ## PostgreSQL connection string
 

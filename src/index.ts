@@ -98,9 +98,18 @@ export async function pglint(options: PGLintOptions) {
   }
 
   const gitBranch =
-    options.gitBranch || (await tryRun("git rev-parse --abbrev-ref HEAD"));
+    options.gitBranch ||
+    process.env.GITHUB_REF ||
+    process.env.CIRCLE_BRANCH ||
+    process.env.TRAVIS_PULL_REQUEST_BRANCH ||
+    process.env.TRAVIS_BRANCH ||
+    (await tryRun("git rev-parse --abbrev-ref HEAD"));
   const gitHash =
-    options.gitHash || (await tryRun("git rev-parse --verify HEAD"));
+    options.gitHash ||
+    process.env.GITHUB_SHA ||
+    process.env.CIRCLE_SHA1 ||
+    process.env.TRAVIS_COMMIT ||
+    (await tryRun("git rev-parse --verify HEAD"));
 
   const pool = options.pgPool
     ? options.pgPool
