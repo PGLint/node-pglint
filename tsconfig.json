@@ -5,8 +5,8 @@
     "noEmitOnError": true,
 
     "allowJs": false,
-    "allowSyntheticDefaultImports": false,
-    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "lib": ["es2018"],
     "target": "es2018",
     "module": "commonjs",

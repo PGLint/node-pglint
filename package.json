@@ -30,9 +30,15 @@
   },
   "dependencies": {
     "@types/pg": "^7.14.3",
+    "form-data": "^3.0.0",
+    "node-fetch": "^2.6.0",
     "pg": "^7.1.0"
   },
   "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
     "typescript": "^3.9.3"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

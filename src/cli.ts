@@ -15,11 +15,11 @@ Usage:
 
 async function main() {
   const args = process.argv.slice(2);
-  if (args.length !== 3) {
+  const [token, project, connectionString] = args;
+  if (args.length !== 3 || !token || !project) {
     console.log(USAGE);
     process.exit(1);
   }
-  const [token, project, connectionString] = args;
   await pglint({
     connectionString,
     token,
