@@ -23,23 +23,24 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "bin": {
-    "pglint": "dist/cli.js"
+    "pglint": "cli/index.js"
   },
   "scripts": {
-    "build": "rm -rf dist tsconfig.tsbuildinfo && tsc -b && chmod +x dist/cli.js"
+    "build": "rm -rf dist cli && yarn ncc:prod src/cli.ts -o cli && yarn ncc:prod src/index.ts -o dist && chmod +x cli/index.js",
+    "ncc:prod": "ncc build -m -C --no-source-map-register"
   },
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node-fetch": "^2.5.7",
     "@types/pg": "^7.14.3",
     "form-data": "^3.0.0",
     "node-fetch": "^2.6.0",
-    "pg": "^7.1.0"
-  },
-  "devDependencies": {
-    "@types/node-fetch": "^2.5.7",
+    "pg": "^7.1.0",
     "prettier": "^2.0.5",
     "typescript": "^3.9.3"
   },
   "files": [
+    "cli",
     "dist"
   ]
 }

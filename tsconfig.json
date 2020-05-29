@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-    "composite": true,
-    "incremental": true,
     "noEmitOnError": true,
 
     "allowJs": false,
@@ -28,12 +26,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
 
-    "declaration": true,
-    "declarationMap": true,
-
-    "rootDir": "src",
-    "outDir": "dist",
-    "declarationDir": "dist"
+    "declaration": true
   },
   "include": ["src"],
   "exclude": []

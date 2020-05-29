@@ -12,7 +12,7 @@
   <https://www.gnu.org/licenses/>.
 */
 
-export const INTROSPECTION_QUERY = `\
+export const INTROSPECTION_QUERY: string = `\
 with
   database as (
     select pg_database.oid as _id, *,
